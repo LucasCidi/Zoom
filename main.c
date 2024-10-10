@@ -92,48 +92,14 @@ int calc_pixel(struct pixel_s *pixel, struct pixel_s sub_pix[3][3]) {
 }
 
 int zoom3x(struct image_s *image) {
-        struct image_s zoom1x;
+        struct image_s zoom3x;
 
-        new_ppm(&zoom1x, image->height*3, image->width*3);
+        new_ppm(&zoom3x, image->height*3, image->width*3);
 
         for(int i = 0; i < image->height; i++) {
             for(int j = 0; j < image->width; j++) {
                 struct pixel_s sub_pix[3][3];
                 calc_pixel(&image->pix[i * image->width + j], sub_pix);
-
-                for(int x = 0; x < 3; x++) {
-                    for(int y = 0; y < 3; y++) {
-                        zoom1x.pix[(i * 3 + x) * zoom1x.width + (j * 3 + y)] = sub_pix[x][y];
-                    }
-                }
-            }
-        }
-
-        struct image_s zoom2x;
-
-        new_ppm(&zoom2x, zoom1x.height*3, zoom1x.width*3);
-
-        for(int i = 0; i < zoom1x.height; i++) {
-            for(int j = 0; j < zoom1x.width; j++) {
-                struct pixel_s sub_pix[3][3];
-                calc_pixel(&zoom1x.pix[i * zoom1x.width + j], sub_pix);
-
-                for(int x = 0; x < 3; x++) {
-                    for(int y = 0; y < 3; y++) {
-                        zoom2x.pix[(i * 3 + x) * zoom2x.width + (j * 3 + y)] = sub_pix[x][y];
-                    }
-                }
-            }
-        }
-
-        struct image_s zoom3x;
-
-        new_ppm(&zoom3x, zoom2x.height*3, zoom2x.width*3);
-
-        for(int i = 0; i < zoom2x.height; i++) {
-            for(int j = 0; j < zoom2x.width; j++) {
-                struct pixel_s sub_pix[3][3];
-                calc_pixel(&zoom2x.pix[i * zoom2x.width + j], sub_pix);
 
                 for(int x = 0; x < 3; x++) {
                     for(int y = 0; y < 3; y++) {
@@ -156,4 +122,5 @@ int main() {
 
     zoom3x(&image);
     
+    free_ppm(&image);
 }
